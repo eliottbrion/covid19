@@ -3,20 +3,21 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 
 n_cases = np.asarray([2, 8, 13, 23, 50, 109, 169, 200, 239, 267, 314, 399, 559, 689]) # Source https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Belgium
-R0 = 25 # Parameter to tune so that the model fits n_cases data
+R0 = 4 # Parameter to tune so that the model fits n_cases data
 
 sigma = 1/5.2 # Source: https://www.nature.com/articles/s41421-020-0148-0
 gamma = 1/18.0 # Source: idem
-N = 11.4*10**6 # Belgian population
 beta = R0*gamma
-S0 = N-2 # Two cases on March 1st
-E0 = 0
+N = 11.4*10**6 # Belgian population
 I0 = 2 # Two cases on March 1st
+E0 = 40*I0 # In general, E0 is 30 to 40 times higher than I0
+S0 = N-I0-E0
 z0 = [S0,E0, I0]
 ts = 0.0
 tf = 25.0
 Dt = 1.0
 t  = np.arange(ts, tf+Dt, Dt)
+n_cases = np.asarray([2, 8, 13, 23, 50, 109, 169, 200, 239, 267, 314, 399, 559, 689]) # Source https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Belgium
 
 # Model definition
 def model(z,t,beta,sigma,gamma):
